@@ -18,8 +18,9 @@ class LoginScreen extends StatelessWidget {
             ),
             Gaps.v30,
             ElevatedButton(
-              onPressed: () {
-                signInWithKakao(context);
+              onPressed: () async {
+                await KakaoLoginApi().signWithKakao(context);
+                print('성공');
               },
               child: const Text('로그인'),
             ),
