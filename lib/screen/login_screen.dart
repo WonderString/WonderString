@@ -4,6 +4,17 @@ import 'package:wonderstring/constants/constants.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
+  void performLogin(BuildContext context) async {
+    await signInWithKakao(context);
+
+    if (await UserInfo().userNickname != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MessageScreen()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,10 +29,7 @@ class LoginScreen extends StatelessWidget {
             ),
             Gaps.v30,
             ElevatedButton(
-              onPressed: () async {
-                await KakaoLoginApi().signWithKakao(context);
-                print('성공');
-              },
+              onPressed: () => performLogin(context),
               child: const Text('로그인'),
             ),
           ],

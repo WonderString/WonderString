@@ -39,7 +39,11 @@ dependencies:
   shared_preferences: ^2.3.2
   flutter_dotenv: ^5.1.0
   url_strategy: ^0.3.0
+  flutter_secure_storage: ^4.2.1
+  http: ^1.2.2
+  url_launcher: ^6.3.0
 
+  kakao_flutter_sdk_user: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -65,6 +69,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - .env
+    - assets/
+    - assets/image/
+    
 
   fonts:
     - family: pretendard
@@ -107,3 +114,7 @@ flutter:
           weight: 800
         - asset: assets/fonts/score_dream/SCDream9.otf
           weight: 900
+    - family: tennsor_sans
+      fonts:
+        - asset: assets/fonts/tensor_sans/TenorSans-Regular.ttf
+          weight: 400

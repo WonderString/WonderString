@@ -1,38 +1,53 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
-class KakaoLoginApi {
-  signWithKakao(BuildContext context) async {
-    final UserApi api = UserApi.instance;
-    if (await isKakaoTalkInstalled()) {
-      try {
-        api.loginWithKakaoTalk().then((_) {
-          return api.me();
-        });
-      } catch (error) {
-        print('카카오톡으로 로그인 실패 $error');
+//앱 로그인
+Future<void> signInWithKakao(BuildContext context) async {
+  print('카카오해시값 ${await KakaoSdk.origin}');
 
-        // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우,
-        // 의도적인 로그인 취소로 보고 카카오계정으로 로그인 시도 없이 로그인 취소로 처리 (예: 뒤로 가기)
-        if (error is PlatformException && error.code == 'CANCELED') {
-          return;
-        }
-        // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
-        try {
-          await UserApi.instance.loginWithKakaoAccount();
-          return api.me();
-        } catch (error) {
-          print('카카오계정으로 로그인 실패 $error');
-        }
+  if (await isKakaoTalkInstalled()) {
+    try {
+      await UserApi.instance.loginWithKakaoTalk();
+
+      User user = await UserApi.instance.me();
+      AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
+      print('사용자 데이터: $user');
+      print('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('kakaoUserData', jsonEncode(user.toJson()));
+    } catch (error) {
+      print('카카오톡으로 로그인 실패 $error');
+
+      if (error is PlatformException && error.code == 'CANCELED') {
+        return;
       }
-    } else {
-      try {
-        await UserApi.instance.loginWithKakaoAccount();
-        return api.me();
-      } catch (error) {
-        print('카카오계정으로 로그인 실패 $error');
-      }
+      await tryKakaoAccountLogin(context);
     }
+  } else {
+    await tryKakaoAccountLogin(context);
+  }
+}
+
+// 웹 로그인
+Future<void> tryKakaoAccountLogin(BuildContext context) async {
+  try {
+    await UserApi.instance.loginWithKakaoAccount();
+
+    User user = await UserApi.instance.me();
+    AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
+    print('사용자 데이터: $user');
+    print('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('kakaoUserData', jsonEncode(user.toJson()));
+  } catch (error) {
+    print('카카오계정으로 로그인 실패: $error');
   }
 }

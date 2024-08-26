@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 class AppTextStyles {
@@ -127,5 +129,13 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     fontSize: 10,
     height: 1.2,
+  );
+
+  // Style tensor
+  static TextStyle tensor_sans = const TextStyle(
+    fontFamily: 'tennsor_sans',
+    fontWeight: FontWeight.w400,
+    fontSize: 20,
+    height: 24 / 20,
   );
 }

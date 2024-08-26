@@ -22,10 +22,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Wonderstring 학원생 관리 프로그램',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeManage.theme,
-      home: const LoginScreen(),
-    );
+        title: 'Wonderstring 학원생 관리 프로그램',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeManage.theme,
+        home: const MessageScreen());
   }
 }

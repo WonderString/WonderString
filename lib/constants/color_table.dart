@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -34,4 +36,10 @@ class AppColors {
 
   // BG Color
   static const Color secondaryBG = Color(0XFFF3F4F6); //secondary BG 컬러
+
+  //WonderString
+  static const Color ws_main = Color(0XFF450000); //secondary BG 컬러
+
+  //additional
+  static const Color stroke = Color(0XFFD9D9DE); //secondary BG 컬러
 }
